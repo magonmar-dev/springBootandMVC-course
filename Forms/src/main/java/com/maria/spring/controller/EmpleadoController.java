@@ -1,10 +1,14 @@
 package com.maria.spring.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.maria.spring.model.Empleado;
@@ -32,5 +36,30 @@ public class EmpleadoController {
 	public String nuevoEmpleadoSubmit(@ModelAttribute("empleadoForm") Empleado nuevoEmpleado) {
 		servicio.add(nuevoEmpleado);
 		return "redirect:/empleado/list";
+	}
+	
+	@GetMapping("/empleado/edit/{id}")
+	public String editarEmpleadoForm(@PathVariable long id, Model model) {
+
+		Empleado empleado = servicio.findById(id);
+		if (empleado != null) {
+			model.addAttribute("empleadoForm", empleado);
+			return "form";
+		} else {
+			return "redirect:/empleado/new";
+		}
+
+	}
+
+	@PostMapping("/empleado/edit/submit")
+	public String editarEmpleadoSubmit(@Valid @ModelAttribute("empleadoForm") Empleado empleado,
+			BindingResult bindingResult) {
+
+		if (bindingResult.hasErrors()) {
+			return "form";
+		} else {
+			servicio.edit(empleado);
+			return "redirect:/empleado/list";
+		}
 	}
 }

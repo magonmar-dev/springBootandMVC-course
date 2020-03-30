@@ -24,6 +24,41 @@ public class EmpleadoService {
 		return repositorio;
 	}
 	
+	public Empleado findById(long id) {
+		Empleado result = null;
+		boolean encontrado = false;
+		int i = 0;
+		while (!encontrado && i < repositorio.size()) {
+			if (repositorio.get(i).getId() == id) {
+				encontrado = true;
+				result = repositorio.get(i);
+			} else {
+				i++;
+			}
+		}
+		
+		return result;
+	}
+	
+	public Empleado edit(Empleado e) {
+		boolean encontrado = false;
+		int i = 0;
+		while (!encontrado && i < repositorio.size()) {
+			if (repositorio.get(i).getId() == e.getId()) {
+				encontrado = true;
+				repositorio.remove(i);
+				repositorio.add(i, e);
+			} else {
+				i++;
+			}
+		}
+		
+		if (!encontrado)
+			repositorio.add(e);
+		
+		return e;
+	}
+	
 	@PostConstruct
 	public void init() {
 		repositorio.addAll(
