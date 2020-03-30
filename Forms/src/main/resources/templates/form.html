@@ -43,47 +43,62 @@
 					<li><a href="/">Inicio</a></li>
 					<li class="active"><a href="#">Nuevo empleado</a></li>
 				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false"> <span th:text="${#authentication.name}">Menú</span>
+							<span class="caret"></span>
+					</a>
+						<ul class="dropdown-menu">
+							<li><a
+								href="javascript:document.getElementById('logoutForm').submit()">Salir</a>
+							</li>
+						</ul>
+				</ul>
 			</div>
 			<!--/.nav-collapse -->
 		</div>
 	</nav>
+	<form th:action="@{/logout}" method="POST" id="logoutForm"></form>
 
 	<div class="container">
 
 		<div class="row">
 			<div class="col-md-offset-2 col-md-8">
-				<form method="post" enctype="multipart/form-data" action="#" th:action="${empleadoForm.id != 0 && empleadoForm.id > 0} ? @{/empleado/edit/submit} : @{/empleado/new/submit}"
+				<form method="post" enctype="multipart/form-data" action="#"
+					th:action="${empleadoForm.id != 0 && empleadoForm.id > 0} ? @{/empleado/edit/submit} : @{/empleado/new/submit}"
 					th:object="${empleadoForm}">
-					<h1 th:text="${empleadoForm.id != 0 && empleadoForm.id > 0} ? 'Editar empleado' : 'Nuevo empleado'"></h1>
+					<h1
+						th:text="${empleadoForm.id != 0 && empleadoForm.id > 0} ? 'Editar empleado' : 'Nuevo empleado'"></h1>
 					<div class="form-group"
 						th:classappend="${#fields.hasErrors('id')} ? 'has-error'">
-						<label for="id">ID</label> <input type="text"
-							class="form-control" id="id" placeholder="1"
-							th:field="*{id}"
+						<label for="id">ID</label> <input type="text" class="form-control"
+							id="id" placeholder="1" th:field="*{id}"
 							th:attrappend="readonly=${empleadoForm.id != 0 && empleadoForm.id > 0} ? 'readonly' : null">
-							<span th:if="${#fields.hasErrors('id')}" th:errors="*{id}" 
-								class="help-block" id="id-error">Errores</span>
+						<span th:if="${#fields.hasErrors('id')}" th:errors="*{id}"
+							class="help-block" id="id-error">Errores</span>
 					</div>
 
 					<div class="form-group"
 						th:classappend="${#fields.hasErrors('nombre')} ? 'has-error'">
 						<label for="nombre">Nombre</label> <input type="text"
 							class="form-control" id="nombre" placeholder="Nombre"
-							th:field="*{nombre}" />
-							<span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" 
-								class="help-block" id="nombre-error">Errores</span>
+							th:field="*{nombre}" /> <span
+							th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
+							class="help-block" id="nombre-error">Errores</span>
 					</div>
 					<div class="form-group"
 						th:classappend="${#fields.hasErrors('email')} ? 'has-error'">
-						<label for="email">Email</label>
-						<input type="email" class="form-control" id="email"
-							placeholder="emple@openwebinars.net"th:field="*{email}" />
-							<span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" 
-								class="help-block" id="email-error">Errores</span>
+						<label for="email">Email</label> <input type="email"
+							class="form-control" id="email"
+							placeholder="emple@openwebinars.net" th:field="*{email}" /> <span
+							th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+							class="help-block" id="email-error">Errores</span>
 					</div>
 					<div class="form-group">
 						<label for="telefono">Teléfono</label> <input type="tel"
-							class="form-control" id="telefono" placeholder="954000000" th:field="*{telefono}" />
+							class="form-control" id="telefono" placeholder="954000000"
+							th:field="*{telefono}" />
 					</div>
 					<div class="form-group">
 						<label for="file">Avatar</label> <input id="filebutton"
