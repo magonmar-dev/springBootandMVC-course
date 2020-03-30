@@ -1,12 +1,16 @@
 package com.maria.spring.config;
 
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+import com.maria.spring.upload.storage.StorageProperties;
+
 @Configuration
+@EnableConfigurationProperties(StorageProperties.class)
 public class MyConfig {
 
 	@Bean

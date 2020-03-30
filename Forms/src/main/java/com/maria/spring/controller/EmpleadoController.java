@@ -3,6 +3,8 @@ package com.maria.spring.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,15 +12,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import com.maria.spring.model.Empleado;
 import com.maria.spring.service.EmpleadoService;
+import com.maria.spring.upload.storage.StorageService;
 
 @Controller
 public class EmpleadoController {
 
 	@Autowired
 	private EmpleadoService servicio;
+	
+	@Autowired
+	private StorageService storageService;
 	
 	@GetMapping({"/", "empleado/list"})
 	public String listado(Model model) {
@@ -33,10 +43,16 @@ public class EmpleadoController {
 	}
 	
 	@PostMapping("/empleado/new/submit")
-	public String nuevoEmpleadoSubmit(@Valid @ModelAttribute("empleadoForm") Empleado nuevoEmpleado, BindingResult bindingResult) {
+	public String nuevoEmpleadoSubmit(@Valid @ModelAttribute("empleadoForm") Empleado nuevoEmpleado, 
+			BindingResult bindingResult, @RequestParam("file") MultipartFile file) {
 		if (bindingResult.hasErrors()) {
 			return "form";
 		} else {
+			if(!file.isEmpty()) {
+				String avatar = storageService.store(file, nuevoEmpleado.getId());
+				nuevoEmpleado.setImagen(MvcUriComponentsBuilder
+						.fromMethodName(EmpleadoController.class, "serveFile", avatar).build().toUriString());
+			}
 			servicio.add(nuevoEmpleado);
 			return "redirect:/empleado/list";
 		}
@@ -52,7 +68,6 @@ public class EmpleadoController {
 		} else {
 			return "redirect:/empleado/new";
 		}
-
 	}
 
 	@PostMapping("/empleado/edit/submit")
@@ -65,5 +80,12 @@ public class EmpleadoController {
 			servicio.edit(empleado);
 			return "redirect:/empleado/list";
 		}
+	}
+	
+	@GetMapping("/files/{filename:.+}")
+	@ResponseBody
+	public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
+		Resource file = storageService.loadAsResource(filename);
+		return ResponseEntity.ok().body(file);
 	}
 }

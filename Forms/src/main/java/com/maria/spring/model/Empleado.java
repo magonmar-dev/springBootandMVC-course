@@ -17,6 +17,8 @@ public class Empleado {
 	
 	private String telefono;
 	
+	private String imagen;
+	
 	public Empleado() { }
 
 	public Empleado(long id, String nombre, String email, String telefono) {
@@ -24,6 +26,15 @@ public class Empleado {
 		this.nombre = nombre;
 		this.email = email;
 		this.telefono = telefono;
+	}
+
+	public Empleado(@Min(value = 0, message = "{empleado.id.mayorquecero}") long id, @NotEmpty String nombre,
+			@Email String email, String telefono, String imagen) {
+		this.id = id;
+		this.nombre = nombre;
+		this.email = email;
+		this.telefono = telefono;
+		this.imagen = imagen;
 	}
 
 	public long getId() {
@@ -58,12 +69,21 @@ public class Empleado {
 		this.telefono = telefono;
 	}
 
+	public String getImagen() {
+		return imagen;
+	}
+
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((imagen == null) ? 0 : imagen.hashCode());
 		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
 		result = prime * result + ((telefono == null) ? 0 : telefono.hashCode());
 		return result;
@@ -85,6 +105,11 @@ public class Empleado {
 			return false;
 		if (id != other.id)
 			return false;
+		if (imagen == null) {
+			if (other.imagen != null)
+				return false;
+		} else if (!imagen.equals(other.imagen))
+			return false;
 		if (nombre == null) {
 			if (other.nombre != null)
 				return false;
@@ -100,6 +125,7 @@ public class Empleado {
 
 	@Override
 	public String toString() {
-		return "Empleado [id=" + id + ", nombre=" + nombre + ", email=" + email + ", telefono=" + telefono + "]";
+		return "Empleado [id=" + id + ", nombre=" + nombre + ", email=" + email + ", telefono=" + telefono + ", imagen="
+				+ imagen + "]";
 	}
 }

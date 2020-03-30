@@ -55,6 +55,7 @@
         	<thead>
         		<tr>
         			<th>ID</th>
+        			<th>Avatar</th>
         			<th>Nombre</th>
         			<th>Email</th>
         			<th>Teléfono</th>
@@ -62,6 +63,8 @@
         	<tbody>
         		<tr th:each="empleado : ${listaEmpleados}">
         			<td th:text="${empleado.id}"></td>
+        			<td><img src="" 
+        				th:src="@{${empleado.imagen} ?: 'https://api.adorable.io/avatars/64/{email}.png'(email=${empleado.email})}" width="64px" height="64px"/></td>
         			<td th:text="${empleado.nombre}"></td>
         			<td th:text="${empleado.email}"></td>
         			<td th:text="${empleado.telefono}"></td>
