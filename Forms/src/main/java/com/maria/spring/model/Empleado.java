@@ -1,10 +1,20 @@
 package com.maria.spring.model;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+
 public class Empleado {
 
+	@Min(value=0, message="{empleado.id.mayorquecero}")
 	private long id;
+	
+	@NotEmpty
 	private String nombre;
+	
+	@Email
 	private String email;
+	
 	private String telefono;
 	
 	public Empleado() { }

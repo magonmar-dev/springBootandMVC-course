@@ -33,9 +33,13 @@ public class EmpleadoController {
 	}
 	
 	@PostMapping("/empleado/new/submit")
-	public String nuevoEmpleadoSubmit(@ModelAttribute("empleadoForm") Empleado nuevoEmpleado) {
-		servicio.add(nuevoEmpleado);
-		return "redirect:/empleado/list";
+	public String nuevoEmpleadoSubmit(@Valid @ModelAttribute("empleadoForm") Empleado nuevoEmpleado, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return "form";
+		} else {
+			servicio.add(nuevoEmpleado);
+			return "redirect:/empleado/list";
+		}
 	}
 	
 	@GetMapping("/empleado/edit/{id}")
