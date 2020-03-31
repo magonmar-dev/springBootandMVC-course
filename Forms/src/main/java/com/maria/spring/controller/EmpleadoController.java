@@ -1,5 +1,7 @@
 package com.maria.spring.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,21 +20,22 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import com.maria.spring.model.Empleado;
-import com.maria.spring.service.EmpleadoService;
+import com.maria.spring.service.IEmpleadoService;
 import com.maria.spring.upload.storage.StorageService;
 
 @Controller
 public class EmpleadoController {
 
 	@Autowired
-	private EmpleadoService servicio;
+	private IEmpleadoService servicio;
 	
 	@Autowired
 	private StorageService storageService;
 	
 	@GetMapping({"/", "empleado/list"})
-	public String listado(Model model) {
-		model.addAttribute("listaEmpleados", servicio.findAll());
+	public String listado(Model model, @RequestParam(name="q", required=false) String query) {
+		List<Empleado> resultado = (query == null) ? servicio.findAll() : servicio.buscador(query);
+		model.addAttribute("listaEmpleados", resultado);
 		return "list";
 	}
 	

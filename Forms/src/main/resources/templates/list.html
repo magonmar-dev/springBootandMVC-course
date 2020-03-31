@@ -55,8 +55,12 @@
 							</li>
 						</ul>
 				</ul>
-			</div>
-			<!--/.nav-collapse -->
+				
+				<form class="navbar-form navbar-right">
+					<input type="text" class="form-control" placeholder="Buscar..."
+						name="q" th:value="${param.q}">
+				</form>
+			</div><!--/.nav-collapse -->
 		</div>
 	</nav>
 	<form th:action="@{/logout}" method="POST" id="logoutForm"></form>

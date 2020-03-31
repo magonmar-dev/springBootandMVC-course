@@ -1,14 +1,21 @@
 package com.maria.spring.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
+@Entity
 public class Empleado {
 
-	@Min(value=0, message="{empleado.id.mayorquecero}")
+	@Id @GeneratedValue
+	// @Min(value=0, message="{empleado.id.mayorquecero}")
 	private long id;
 	
+	@Column(nullable=false)
 	@NotEmpty
 	private String nombre;
 	
@@ -20,7 +27,13 @@ public class Empleado {
 	private String imagen;
 	
 	public Empleado() { }
-
+	
+	public Empleado(@NotEmpty String nombre, @Email String email, String telefono) {
+		this.nombre = nombre;
+		this.email = email;
+		this.telefono = telefono;
+	}
+	
 	public Empleado(long id, String nombre, String email, String telefono) {
 		this.id = id;
 		this.nombre = nombre;

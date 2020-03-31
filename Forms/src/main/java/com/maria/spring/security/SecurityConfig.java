@@ -25,13 +25,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests()
-				.antMatchers("/webjars/**", "/css/**").permitAll()
+				.antMatchers("/webjars/**", "/css/**", "/h2-console/**").permitAll()
 				.anyRequest().authenticated()
 				.and()
 			.formLogin()
 				.loginPage("/login")
 				.permitAll()
 				.and()
-			.logout();		
+			.logout();
+		
+		http.csrf().disable();
+		http.headers().frameOptions().disable();
 	}
 }
